@@ -1,9 +1,19 @@
 require 'socket'
 
 class ToCGIServer
-  def initialize(path, cgi)
+  def initialize(path, cgi, config={})
     File.unlink(path) rescue nil
     @server = UNIXServer.new(path)
+    owner = config[:owner]
+    group = config[:group]
+    if owner || group
+      require 'etc'
+      owner = Etc.getpwnam(owner).uid if owner
+      group = Etc.getgrnam(group).uid if group
+      File.chown(owner, group, path)
+    end
+    mode = config[:mode]
+    File.chmod(mode, path) if mode
     @cgi = cgi
   end
 

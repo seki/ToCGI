@@ -4,6 +4,7 @@ require 'webrick/cgi'
 require 'drb/drb'
 require 'erb'
 require 'monitor'
+require 'to_cgi_server'
  
 class WikiR
   class Book
@@ -97,6 +98,6 @@ if __FILE__ == $0
   book = WikiR::Book.new
   ui = WikiR::UI.new(book)
   DRb.start_service('druby://localhost:50830', ui)
-  DRb.thread.join
+  ToCGIServer.new('/tmp/to_cgi.soc', ui, {:mode => 0666}).run
 end
 

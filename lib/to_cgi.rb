@@ -12,6 +12,6 @@ def to_cgi(path)
 end
 
 if __FILE__ == $0
-  path = "/tmp/#{File.basename($0, '.rb')}"
+  path = "/tmp/#{File.basename($0, '.rb')}.soc"
   to_cgi(path)
 end
